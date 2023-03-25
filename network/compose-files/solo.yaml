@@ -57,6 +57,29 @@ services:
     networks:
       - basic
 
+  peer1.org1.sample.com:
+    container_name: peer1.org1.sample.com
+    extends:
+      file: base.yaml
+      service: peer-base
+    environment:
+      - CORE_PEER_ID=peer1.org1.sample.com
+      - CORE_PEER_LOCALMSPID=Org1MSP
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:7051
+      - CORE_PEER_ADDRESS=peer1.org1.sample.com:7051
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb.sample.com0:5984
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.org1.sample.com:7051
+    ports:
+      - 57052:7051
+      - 57055:7053
+    volumes:
+        - ./../crypto-config/peerOrganizations/org1.sample.com/peers/peer1.org1.sample.com/msp:/etc/hyperledger/fabric/msp
+        - ./../crypto-config/peerOrganizations/org1.sample.com/peers/peer1.org1.sample.com/tls:/etc/hyperledger/fabric/tls
+    depends_on:
+      - couchdb.sample.com1
+    networks:
+      - basic
+
   couchdb.sample.com0:
     container_name: couchdb.sample.com0
     image: hyperledger/fabric-couchdb:${THIRD_PARTY_VERSION}
@@ -65,6 +88,17 @@ services:
       - COUCHDB_PASSWORD=
     ports:
       - 55984:5984
+    networks:
+      - basic
+  
+  couchdb.sample.com1:
+    container_name: couchdb.sample.com1
+    image: hyperledger/fabric-couchdb:${THIRD_PARTY_VERSION}
+    environment:
+      - COUCHDB_USER=
+      - COUCHDB_PASSWORD=
+    ports:
+      - 55985:5984
     networks:
       - basic
 
@@ -101,7 +135,30 @@ services:
         - ./../crypto-config/peerOrganizations/org2.sample.com/peers/peer0.org2.sample.com/msp:/etc/hyperledger/fabric/msp
         - ./../crypto-config/peerOrganizations/org2.sample.com/peers/peer0.org2.sample.com/tls:/etc/hyperledger/fabric/tls
     depends_on:
-      - couchdb.sample.com0
+      - couchdb2.sample.com0
+    networks:
+      - basic
+
+  peer1.org2.sample.com:
+    container_name: peer1.org2.sample.com
+    extends:
+      file: base.yaml
+      service: peer-base
+    environment:
+      - CORE_PEER_ID=peer1.org2.sample.com
+      - CORE_PEER_LOCALMSPID=Org2MSP
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:9051
+      - CORE_PEER_ADDRESS=peer1.org2.sample.com:9051
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb2.sample.com1:5984
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.org2.sample.com:9051
+    ports:
+      - 9052:9051
+      - 9054:9053
+    volumes:
+        - ./../crypto-config/peerOrganizations/org2.sample.com/peers/peer1.org2.sample.com/msp:/etc/hyperledger/fabric/msp
+        - ./../crypto-config/peerOrganizations/org2.sample.com/peers/peer1.org2.sample.com/tls:/etc/hyperledger/fabric/tls
+    depends_on:
+      - couchdb2.sample.com1
     networks:
       - basic
 
@@ -113,6 +170,17 @@ services:
       - COUCHDB_PASSWORD=
     ports:
       - 57984:5984
+    networks:
+      - basic
+
+  couchdb2.sample.com1:
+    container_name: couchdb2.sample.com1
+    image: hyperledger/fabric-couchdb:${THIRD_PARTY_VERSION}
+    environment:
+      - COUCHDB_USER=
+      - COUCHDB_PASSWORD=
+    ports:
+      - 57985:5984
     networks:
       - basic
 

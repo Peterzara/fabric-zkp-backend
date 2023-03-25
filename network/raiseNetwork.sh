@@ -48,7 +48,7 @@ docker exec fabric_host_sample.com ./scripts/generate2.sh
 
 
 docker-compose -f compose-files/solo.yaml up -d
-sleep 3
+sleep 8
 
 
 
