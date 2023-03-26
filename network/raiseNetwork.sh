@@ -34,7 +34,7 @@ echo "##########################################################"
 echo "#####       starting ca and copy idemix keys     #########"
 echo "##########################################################"
 
-docker-compose -f compose-files/solo.yaml up -d ca.sample.com
+docker-compose -f compose-files/docker-compose.yml up -d ca.sample.com
 sleep 3
 
 docker cp ca.sample.com:/etc/hyperledger/fabric-ca-server/IssuerPublicKey ${PWD}/crypto-config/IssuerPublicKey
@@ -47,8 +47,8 @@ docker exec fabric_host_sample.com ./scripts/generate2.sh
 
 
 
-docker-compose -f compose-files/solo.yaml up -d
-sleep 8
+docker-compose -f compose-files/docker-compose.yml up -d
+sleep 40
 
 
 

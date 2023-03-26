@@ -1,5 +1,5 @@
-docker-compose -f compose-files/solo.yaml kill \
-&& docker-compose -f compose-files/solo.yaml down
+docker-compose -f compose-files/docker-compose.yml kill \
+&& docker-compose -f compose-files/docker-compose.yml down
 
 
 docker rm $(docker ps -f "name=.sample.com-" -aq)
